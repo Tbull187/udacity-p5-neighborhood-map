@@ -1,48 +1,41 @@
 function initMap() {
-  var myLatlng = {lat: -25.363, lng: 131.044};
 
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 4,
-    center: myLatlng
-  });
+	// Create a map object and specify the DOM element for display.
+	var map = new google.maps.Map(document.getElementById('map'), {
+		zoom: 14,
+		center: {lat: 47.6062, lng: -122.332}
+	});
 
-  var marker = new google.maps.Marker({
-    position: myLatlng,
+  var marker1 = new google.maps.Marker({
     map: map,
-    title: 'Click to zoom'
+    position: {lat: 47.629552, lng: -122.360127},
+    title: 'Kerry Park',
+    animation: google.maps.Animation.DROP
   });
 
-  map.addListener('center_changed', function() {
-    // 3 seconds after the center of the map has changed, pan back to the
-    // marker.
-    window.setTimeout(function() {
-      map.panTo(marker.getPosition());
-    }, 3000);
-  });
+  var marker2 = new google.maps.Marker({
 
-  marker.addListener('click', function() {
-    map.setZoom(8);
-    map.setCenter(marker.getPosition());
-  });
+  })
+
+  marker1.addListener('click', toggleBounce);
+}
+
+var marker;
+function toggleBounce() {
+  if (marker.getAnimation() !== null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
 }
 
 
-// function initMap() {
+/* Locations
 
-// 	// Create a map object and specify the DOM element for display.
-// 	var map = new google.maps.Map(document.getElementById('map'), {
-// 		zoom: 0,
-// 		center: {lat: 47.606, lng: -122.332}
-// 	});
-// }
+Kinear Park
+Uncle Ike's
+Showbox Sodo
+Petite Toulouse
+*/
 
-
-// function initMap() {
-// 	var mapOptions = {
-// 		zoom: 0,
-// 		center: new google.maps.LatLng(47.606, -122.332)
-// 	};
-
-// 	var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-// }
 
