@@ -129,54 +129,65 @@ var model = [
   }
 ]
 
-// var Marker = function(data) {
-//   this.title         = ko.observable(data.title);
-//   this.lat           = ko.observable(data.lat);
-//   this.lng           = ko.observable(data.lng);
-//   this.contentString = ko.observable(data.contentString);
-// }
+
+
+
 
 var map, marker, infoWindow;
 
-function initMap() {
-  // Create map
-  map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 13,
-    center: {lat: 47.6062, lng: -122.332}
-  });
-
-  model.forEach(function(data){
-    marker = new google.maps.Marker({
-      map: map,
-      animation: google.maps.Animation.DROP,
-      title: data.title,
-      position: {lat: data.lat, lng: data.lng}
-    })
-
-    infoWindow = new google.maps.InfoWindow({
-      content: data.contentString,
-    })
-
-    marker.addListener('click', function(){
-      infoWindow.open(map, marker);
-    })
-  });
-
-};
-
 
 function viewModel() {
-  // 'self' will always be defined as the viewModel
+
+  // Self will always refer to the viewModel ;)
   var self = this;
 
-  // Array to hold location markers
-  self.locations = ko.observableArray();
+  // Marker constructor
+  var Marker = function(data) {
+    this.title = data.title;
+    this.lat = data.lat;
+    this.lng = data.lng;
 
-}
+    this.infoWindow = new google.maps.InfoWindow({
+      content: data.contentString
+    });
+  }
+
+  // Observable array holds map markers
+  self.allMarkers = ko.observableArray([]);
+
+  // Loop over model, create Marker objects, push them into allMarkers
+  model.forEach(function(data){
+    self.allMarkers.push( new Marker(data));
+  });
+
+  // Create Google Map
+  self.initMap = function() {
+
+    map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 13,
+      center: {lat: 47.6062, lng: -122.332}
+    });
+  }
+
+  // Loop over allMarkers and initialize marker objects
+  self.allMarkers().forEach(function(marker) {
+    marker = new google.maps.Marker({
+      map: map,
+      Animation: google.maps.Animation.DROP,
+      title: marker.title,
+      position: {lat: marker.lat, lng: marker.lng}
+    })
+  });
+
+
+  self.selectedMarker = ko.observable( self.allMarkers[0] );
+
+  self.initMap();
+};
 
 ko.applyBindings( new viewModel());
 
-
+viewModel();
 
 // function toggleBounce() {
 //   if (marker.getAnimation() !== null) {
@@ -185,3 +196,19 @@ ko.applyBindings( new viewModel());
 //     marker.setAnimation(google.maps.Animation.BOUNCE);
 //   }
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
