@@ -9,7 +9,7 @@ var model = [
     contentString: '<div id="content">'+
       '<div id="siteNotice">'+
       '</div>'+
-      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+      '<h1 id="firstHeading" class="firstHeading">Kerry Park</h1>'+
       '<div id="bodyContent">'+
       '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
       'sandstone rock formation in the southern part of the '+
@@ -34,7 +34,7 @@ var model = [
     contentString: '<div id="content">'+
       '<div id="siteNotice">'+
       '</div>'+
-      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+      '<h1 id="firstHeading" class="firstHeading">Uncle Ikes</h1>'+
       '<div id="bodyContent">'+
       '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
       'sandstone rock formation in the southern part of the '+
@@ -59,7 +59,7 @@ var model = [
     contentString: '<div id="content">'+
       '<div id="siteNotice">'+
       '</div>'+
-      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+      '<h1 id="firstHeading" class="firstHeading">Showbox</h1>'+
       '<div id="bodyContent">'+
       '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
       'sandstone rock formation in the southern part of the '+
@@ -84,7 +84,7 @@ var model = [
     contentString: '<div id="content">'+
       '<div id="siteNotice">'+
       '</div>'+
-      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+      '<h1 id="firstHeading" class="firstHeading">Toulouse Petite</h1>'+
       '<div id="bodyContent">'+
       '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
       'sandstone rock formation in the southern part of the '+
@@ -109,7 +109,7 @@ var model = [
     contentString: '<div id="content">'+
       '<div id="siteNotice">'+
       '</div>'+
-      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+      '<h1 id="firstHeading" class="firstHeading">GameWorks</h1>'+
       '<div id="bodyContent">'+
       '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
       'sandstone rock formation in the southern part of the '+
@@ -133,7 +133,7 @@ var model = [
 
 
 
-var map, marker, infoWindow;
+var marker, infoWindow;
 
 
 function viewModel() {
@@ -142,27 +142,22 @@ function viewModel() {
   var self = this;
 
   // Create Google Map
-  self.initMap = function() {
-
-    map = new google.maps.Map(document.getElementById('map'), {
+  self.googleMap = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
       center: {lat: 47.6062, lng: -122.332}
-    });
-  }  
+  });
+
 
   // Observable array holds map markers
   self.allMarkers = ko.observableArray([]);
 
-  // Marker constructor
+  //Marker constructor
   var Marker = function(data) {
     this.title = data.title;
     this.lat = data.lat;
     this.lng = data.lng;
-
-    this.infoWindow = new google.maps.InfoWindow({
-      content: data.contentString
-    });
-  }
+    this.contentString = data.contentString;
+  };
 
   // Loop over model, create Marker objects, push them into allMarkers
   model.forEach(function(data){
@@ -172,14 +167,29 @@ function viewModel() {
   // Loop over allMarkers and initialize marker objects
   self.allMarkers().forEach(function(marker) {
     marker = new google.maps.Marker({
-      map: map,
+      map: self.googleMap,
       Animation: google.maps.Animation.DROP,
       title: marker.title,
       position: {lat: marker.lat, lng: marker.lng}
     })
+
+    // infoWindow = new google.maps.InfoWindow({
+    //   content: marker.contentString
+    // });
+
+    marker.addListener('click', function() {
+      infoWindow.open(self.googleMap, marker);
+    });
+
   });
 
-  self.initMap();
+
+  self.allMarkers().forEach(function(marker) {
+    infoWindow = new google.maps.InfoWindow({
+      content: marker.contentString
+    })
+  });
+
 };
 
 ko.applyBindings( new viewModel());
