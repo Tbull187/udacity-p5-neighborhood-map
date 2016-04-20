@@ -141,6 +141,18 @@ function viewModel() {
   // Self will always refer to the viewModel ;)
   var self = this;
 
+  // Create Google Map
+  self.initMap = function() {
+
+    map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 13,
+      center: {lat: 47.6062, lng: -122.332}
+    });
+  }  
+
+  // Observable array holds map markers
+  self.allMarkers = ko.observableArray([]);
+
   // Marker constructor
   var Marker = function(data) {
     this.title = data.title;
@@ -152,22 +164,10 @@ function viewModel() {
     });
   }
 
-  // Observable array holds map markers
-  self.allMarkers = ko.observableArray([]);
-
   // Loop over model, create Marker objects, push them into allMarkers
   model.forEach(function(data){
     self.allMarkers.push( new Marker(data));
   });
-
-  // Create Google Map
-  self.initMap = function() {
-
-    map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 13,
-      center: {lat: 47.6062, lng: -122.332}
-    });
-  }
 
   // Loop over allMarkers and initialize marker objects
   self.allMarkers().forEach(function(marker) {
@@ -178,9 +178,6 @@ function viewModel() {
       position: {lat: marker.lat, lng: marker.lng}
     })
   });
-
-
-  self.selectedMarker = ko.observable( self.allMarkers[0] );
 
   self.initMap();
 };
@@ -197,9 +194,16 @@ viewModel();
 //   }
 // }
 
+/*
 
+https://api.foursquare.com/v2/venues/search
+  ?client_id=NVT0H2AVTCVAS3AZM5M5ITUQ4Q1D05GA2LL0BW33OEVEPAFE
+  &client_secret=BTEL02NGF4LMABLSNMYAKKLC43N0ZH0QUDZYB4H54Q3VSEDD
+  &v=20130815
+  &ll=40.7,-74
+  &query=sushi
 
-
+*/
 
 
 
