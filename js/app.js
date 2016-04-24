@@ -1,5 +1,5 @@
 
-// This is unique data that will be injected into google map markers and infoWindows
+// Model holds data that will be injected into google map markers
 
 var model = [
   {
@@ -34,6 +34,7 @@ var model = [
   }
 ]
 
+// Global variables
 var marker, infoWindow;
 
 
@@ -48,11 +49,10 @@ function viewModel() {
       center: {lat: 47.6062, lng: -122.332}
   });
 
-
   // Observable array holds map markers
   self.allMarkers = ko.observableArray([]);
 
-  //Marker constructor
+  // Marker constructor
   var Marker = function(data) {
     this.title = data.title;
     this.lat = data.lat;
@@ -65,13 +65,16 @@ function viewModel() {
     self.allMarkers.push( new Marker(data));
   });
 
-  // FourSquare api URL's 
+  // FourSquare api URL's
   var baseURL = 'https://api.foursquare.com/v2/venues/';
   var venueID = '';
   var endURL = '?client_id=NVT0H2AVTCVAS3AZM5M5ITUQ4Q1D05GA2LL0BW33OEVEPAFE&client_secret=BTEL02NGF4LMABLSNMYAKKLC43N0ZH0QUDZYB4H54Q3VSEDD&v=20130815';
 
   // Loop over allMarkers and initialize marker objects
   self.allMarkers().forEach(function(marker) {
+
+    console.log(marker.venueID);
+
     marker = new google.maps.Marker({
       map: self.googleMap,
       Animation: google.maps.Animation.DROP,
@@ -79,20 +82,25 @@ function viewModel() {
       position: {lat: marker.lat, lng: marker.lng}
     })
 
-    venueID = marker.venueID;
+    console.log(marker.venueID);
 
-    $.getJSON(baseURL+venueID+endURL, function(venue){
-
-    });
-
-    var content = 'test';
-
+    // Create infoWindow
     infoWindow = new google.maps.InfoWindow({
-      content: content
+      content: null
     });
 
+    // Click event listener for markers
     marker.addListener('click', function() {
       infoWindow.open(self.googleMap, marker);
+
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+      window.setTimeout(function(){
+        marker.setAnimation(null);
+      }, 1450)
+
+      $.getJSON(baseURL+marker.venueID+endURL, function(data){
+        infoWindow.setContent(data.response.venue.name)
+      });
     });
 
   });
@@ -100,37 +108,6 @@ function viewModel() {
 
 };
 
-ko.applyBindings( new viewModel());
+ko.applyBindings( new viewModel() );
 
 viewModel();
-
-// function toggleBounce() {
-//   if (marker.getAnimation() !== null) {
-//     marker.setAnimation(null);
-//   } else {
-//     marker.setAnimation(google.maps.Animation.BOUNCE);
-//   }
-// }
-
-/*
-
-https://api.foursquare.com/v2/venues/search
-  ?client_id=NVT0H2AVTCVAS3AZM5M5ITUQ4Q1D05GA2LL0BW33OEVEPAFE
-  &client_secret=BTEL02NGF4LMABLSNMYAKKLC43N0ZH0QUDZYB4H54Q3VSEDD
-  &v=20130815
-  &ll=40.7,-74
-  &query=sushi
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
