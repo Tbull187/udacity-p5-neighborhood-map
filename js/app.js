@@ -7,35 +7,35 @@ var model = [
     lat: 47.629552,
     lng: -122.360127,
     venueID: '4558a938f964a520493d1fe3',
-    description: 'aa1'
+    description: 'Nunc non fringilla erat, et iaculis lorem. Nam orci odio, ornare sit amet ligula eget, sodales sollicitudin est. Vivamus et augue hendrerit, pellentesque neque ut, finibus lectus. Nulla maximus magna neque, a rhoncus mi laoreet quis. Proin porta efficitur dictum.'
   },
   {
     title: 'Uncle Ike\'s',
     lat: 47.613352,
     lng: -122.302226,
     venueID: '542b0848498e259fb7853267',
-    description: 'aa2'
+    description: 'Nunc non fringilla erat, et iaculis lorem. Nam orci odio, ornare sit amet ligula eget, sodales sollicitudin est. Vivamus et augue hendrerit, pellentesque neque ut, finibus lectus. Nulla maximus magna neque, a rhoncus mi laoreet quis. Proin porta efficitur dictum.'
   },
   {
     title: 'Showbox Sodo',
     lat: 47.587926,
     lng: -122.333627,
     venueID: '472e59eaf964a520074c1fe3',
-    description: 'aa3'
+    description: 'Nunc non fringilla erat, et iaculis lorem. Nam orci odio, ornare sit amet ligula eget, sodales sollicitudin est. Vivamus et augue hendrerit, pellentesque neque ut, finibus lectus. Nulla maximus magna neque, a rhoncus mi laoreet quis. Proin porta efficitur dictum.'
   },
   {
     title: 'Toulouse Petit',
     lat: 47.624761,
     lng: -122.357008,
     venueID: '4ae60430f964a52018a421e3',
-    description: 'aa4'
+    description: 'Nunc non fringilla erat, et iaculis lorem. Nam orci odio, ornare sit amet ligula eget, sodales sollicitudin est. Vivamus et augue hendrerit, pellentesque neque ut, finibus lectus. Nulla maximus magna neque, a rhoncus mi laoreet quis. Proin porta efficitur dictum.'
   },
   {
     title: 'GameWorks',
     lat: 47.611909,
     lng: -122.334027,
     venueID: '40b7d280f964a5208d001fe3',
-    description: 'aa5'
+    description: 'Nunc non fringilla erat, et iaculis lorem. Nam orci odio, ornare sit amet ligula eget, sodales sollicitudin est. Vivamus et augue hendrerit, pellentesque neque ut, finibus lectus. Nulla maximus magna neque, a rhoncus mi laoreet quis. Proin porta efficitur dictum.'
   }
 ]
 
@@ -103,12 +103,18 @@ function viewModel() {
         $.getJSON(baseURL+item.venueID+endURL, function(data){
           var venue = data.response.venue;
 
+          infoWindow.setContent('');
+
           infoWindow.setContent(
-            '<div>'+venue.name+'</div>'+
-            '<div>'+venue.categories[0].name+'</div>'+
+            '<h3>'+venue.name+'</h3>'+
+            '<h5>'+venue.categories[0].name+'</h5>'+
             '<div>'+item.description+'</div>'+
             '<div>'+venue.location.address+'</div>'+
-            '<img src="'+venue.photos.groups[0].items[0].prefix+venue.photos.groups[0].items[0].suffix+'"">'
+            '<div id="center">'+
+            '<img src="'+venue.photos.groups[0].items[0].prefix+'width200'+venue.photos.groups[0].items[0].suffix+'"">'+
+            '<img src="'+venue.photos.groups[0].items[1].prefix+'width200'+venue.photos.groups[0].items[1].suffix+'"">'+
+            '<img src="'+venue.photos.groups[0].items[2].prefix+'width200'+venue.photos.groups[0].items[3].suffix+'"">'+
+            '</div>'
           )
         });
 
