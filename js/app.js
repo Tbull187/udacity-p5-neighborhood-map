@@ -109,7 +109,7 @@ function viewModel() {
             '<h3>'+venue.name+'</h3>'+
             '<h5>'+venue.categories[0].name+'</h5>'+
             '<div>'+item.description+'</div>'+
-            '<div>'+venue.location.address+'</div>'+
+            '<div><h6 class="address">Address: </h6>'+venue.location.address+'</div>'+
             '<div id="center">'+
             '<img src="'+venue.photos.groups[0].items[0].prefix+'width200'+venue.photos.groups[0].items[0].suffix+'"">'+
             '<img src="'+venue.photos.groups[0].items[1].prefix+'width200'+venue.photos.groups[0].items[1].suffix+'"">'+
@@ -126,21 +126,6 @@ function viewModel() {
 
       };
     })(marker));
-
-    // Click event listener for markers
-    // marker.addListener('click', function() {
-    //   infoWindow.open(self.googleMap, marker);
-
-    //   marker.setAnimation(google.maps.Animation.BOUNCE);
-    //   window.setTimeout(function(){
-    //     marker.setAnimation(null);
-    //   }, 1450);
-
-    //   $.getJSON(baseURL+item.venueID+endURL, function(data){
-    //     infoWindow.setContent(data.response.venue.name)
-    //   });
-    // });
-
 
   });
 

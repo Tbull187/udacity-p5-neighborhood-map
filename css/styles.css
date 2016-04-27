@@ -35,3 +35,11 @@ body {
 #center {
 	text-align: center;
 }
+
+img {
+	padding: 5px;
+}
+
+#address {
+	display: inline-block;
+}
