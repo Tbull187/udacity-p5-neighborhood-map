@@ -41,13 +41,11 @@ var model = [
 
 
 
-
-
 // Global variables
 var marker, infoWindow;
 
 
-function viewModel() {
+var viewModel = function() {
 
   // Self will always refer to the viewModel ;)
   var self = this;
@@ -109,7 +107,7 @@ function viewModel() {
             '<h3>'+venue.name+'</h3>'+
             '<h5>'+venue.categories[0].name+'</h5>'+
             '<div>'+item.description+'</div>'+
-            '<div><h6 class="address">Address: </h6>'+venue.location.address+'</div>'+
+            '<div><h6 id="address">Address: </h6>'+venue.location.address+'</div>'+
             '<div id="center">'+
             '<img src="'+venue.photos.groups[0].items[0].prefix+'width200'+venue.photos.groups[0].items[0].suffix+'"">'+
             '<img src="'+venue.photos.groups[0].items[1].prefix+'width200'+venue.photos.groups[0].items[1].suffix+'"">'+
@@ -129,12 +127,27 @@ function viewModel() {
 
   });
 
+  self.myArray = ko.observableArray([
+    {title: 'Title 1'},
+    {title: 'Title 2'},
+    {title: 'Title 3'}
+  ]);
 
 };
 
-ko.applyBindings( new viewModel() );
+ko.applyBindings(new viewModel());
+
 
 viewModel();
+
+
+
+
+
+
+
+
+
 
 
 
