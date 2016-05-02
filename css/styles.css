@@ -43,3 +43,8 @@ img {
 #address {
 	display: inline-block;
 }
+
+/*Overide materialize - collection text color*/
+.collection a.collection-item {
+  color: #000000;
+}

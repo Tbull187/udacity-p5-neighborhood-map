@@ -27,7 +27,7 @@
 		<div class="col s2" id="filter">
 			<input type="search"></input>
 			<ul class="collection" data-bind="foreach: allMarkers">
-				<li class="collection-item" databind="text: title"></li>
+				<a href="#!" class="collection-item" data-bind="text: title, click: $parent.selectMarker"></a>
 			</ul>
 		</div>
 
@@ -42,9 +42,9 @@
 	<!-- google api key: AIzaSyA6X4EGX2wZKAntZ9_cS6_Gc5nGn5oYfyk console.developers.google.com -->
 
 
-	<script type="text/javascript" src="js/jquery-2.2.2.min.js"></script>
-	<script type="text/javascript" src="js/knockout-3.4.0.js"></script>
 
+	<script type="text/javascript" src="js/knockout-3.4.0.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.2.min.js"></script>
 	<script type="text/javascript" src="js/materialize.js"></script>
 	<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 	<script type="text/javascript" src="js/app.js"></script>

@@ -127,18 +127,32 @@ var viewModel = function() {
 
   });
 
-  self.myArray = ko.observableArray([
-    {title: 'Title 1'},
-    {title: 'Title 2'},
-    {title: 'Title 3'}
-  ]);
+  // FILTER SEARCH
+
+
+
+  // FILTER LIST: When list item is clicked it becomes ACTIVE -> trigger a click event on the corresponding marker
+
+  self.activeMarker = ko.observable( this.allMarkers()[0] );
+
+  self.selectMarker = function(clickedMarker) {
+
+    self.activeMarker( this.allMarkers[clickedMarker] );
+  };
+
+
+
+
 
 };
 
-ko.applyBindings(new viewModel());
 
+
+
+ko.applyBindings( new viewModel() );
 
 viewModel();
+
 
 
 
