@@ -69,7 +69,7 @@ var viewModel = function() {
   };
 
   // Loop over model, create Marker objects, push them into allMarkers
-  model.forEach(function(data){
+  model.forEach(function(data) {
     self.allMarkers.push( new MyMarker(data));
   });
 
@@ -127,15 +127,22 @@ var viewModel = function() {
 
   });
 
-  // FILTER SEARCH
+  /*** FILTER SEARCH ***/
 
+  // Empty observable tied to search input
+  self.query = ko.observable('');
 
+  self.search = ko.computed(function(){
+    return ko.utils.arrayFilter(self.allMarkers(), function(point){
+      return point.title.toLowerCase().indexOf(self.query().toLowerCase()) >= 0;
+    });
+  });
 
   // FILTER LIST: When list item is clicked it becomes ACTIVE -> trigger a click event on the corresponding marker
 
   self.activeMarker = ko.observable( this.allMarkers()[0] );
 
-  self.selectMarker = function(clickedMarker) {
+  self.selectMarker = function(clickedMarker){
 
     self.activeMarker( this.allMarkers[clickedMarker] );
   };
