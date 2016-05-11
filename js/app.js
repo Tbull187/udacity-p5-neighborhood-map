@@ -78,6 +78,8 @@ var viewModel = function() {
   var venueID = '';
   var endURL = '?client_id=NVT0H2AVTCVAS3AZM5M5ITUQ4Q1D05GA2LL0BW33OEVEPAFE&client_secret=BTEL02NGF4LMABLSNMYAKKLC43N0ZH0QUDZYB4H54Q3VSEDD&v=20130815';
 
+
+
   // Loop over allMarkers and initialize marker objects
   self.allMarkers().forEach(function(item) {
 
@@ -114,6 +116,9 @@ var viewModel = function() {
             '<img src="'+venue.photos.groups[0].items[2].prefix+'width200'+venue.photos.groups[0].items[3].suffix+'"">'+
             '</div>'
           )
+        }).error(function(){
+          alert('network call failed');
+          console.log('netowrk call failed');
         });
 
         markerCopy.setAnimation(google.maps.Animation.BOUNCE);
@@ -140,12 +145,23 @@ var viewModel = function() {
 
   // FILTER LIST: When list item is clicked it becomes ACTIVE -> trigger a click event on the corresponding marker
 
-  self.activeMarker = ko.observable( this.allMarkers()[0] );
-
-  self.selectMarker = function(clickedMarker){
-
-    self.activeMarker( this.allMarkers[clickedMarker] );
+  self.listClick = function(marker) {
+      function toggleMarker() {
+        google.maps.event.trigger(marker, 'click', marker);
+      };
+      toggleMarker(marker);
   };
+
+  self.consoleLog = function() {
+    console.log('click.');
+  };
+
+  // self.activeMarker = ko.observable( this.allMarkers()[0] );
+
+  // self.selectMarker = function(clickedMarker){
+
+  //   self.activeMarker( this.allMarkers[clickedMarker] );
+  // };
 
 
 
