@@ -27,7 +27,7 @@
 		<div class="col s2" id="filter">
 			<input type="search" data-bind="textInput: query, updateValue: 'keyup'"></input>
 			<ul class="collection" data-bind="foreach: search()">
-				<a href="#!" class="collection-item" data-bind="text: title, click: $parent.selectMarker"></a>
+				<a href="#!" class="collection-item" data-bind="text: title, click: $parent.listClick"></a>
 			</ul>
 		</div>
 

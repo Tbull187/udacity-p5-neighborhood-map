@@ -66,6 +66,7 @@ var viewModel = function() {
     this.lng = data.lng;
     this.venueID = data.venueID;
     this.description = data.description;
+    this.marker = null;
   };
 
   // Loop over model, create Marker objects, push them into allMarkers
@@ -81,6 +82,15 @@ var viewModel = function() {
   // Loop over allMarkers and initialize marker objects
   self.allMarkers().forEach(function(item) {
 
+    // var markerOptions = {
+    //   map: self.googleMap,
+    //   animation: google.maps.Animation.DROP,
+    //   title: item.title,
+    //   position: {lat: item.lat, lng: item.lng}
+    // };
+
+    // item.marker = new google.maps.Marker(markerOptions);
+
     marker = new google.maps.Marker({
       map: self.googleMap,
       Animation: google.maps.Animation.DROP,
@@ -93,11 +103,15 @@ var viewModel = function() {
       content: null
     });
 
+    // Add click event listener to marker objects.
+    // Use IIFE pattern in order to add listner at the time of ...
     marker.addListener('click', (function(markerCopy){
       return function() {
 
+        // Open infoWindow on click
         infoWindow.open(self.googleMap, markerCopy);
 
+        // API call to fourSquare. Build infoWindow with returned data.
         $.getJSON(baseURL+item.venueID+endURL, function(data){
           var venue = data.response.venue;
 
@@ -116,6 +130,7 @@ var viewModel = function() {
           )
         });
 
+        // Marker bounce effect and timeout.
         markerCopy.setAnimation(google.maps.Animation.BOUNCE);
 
         window.setTimeout(function(){
@@ -129,25 +144,21 @@ var viewModel = function() {
 
   /*** FILTER SEARCH ***/
 
-  // Empty observable tied to search input
+  // Empty observable tied to textInput of search field
   self.query = ko.observable('');
 
+  // Search function: Returns a filtered instance of allMarkers array
   self.search = ko.computed(function(){
     return ko.utils.arrayFilter(self.allMarkers(), function(point){
       return point.title.toLowerCase().indexOf(self.query().toLowerCase()) >= 0;
     });
   });
 
-  // FILTER LIST: When list item is clicked it becomes ACTIVE -> trigger a click event on the corresponding marker
+  self.listClick = function(location) {
+    google.maps.event.trigger(marker, 'click');
 
-  self.activeMarker = ko.observable( this.allMarkers()[0] );
-
-  self.selectMarker = function(clickedMarker){
-
-    self.activeMarker( this.allMarkers[clickedMarker] );
+    console.log('click.');
   };
-
-
 
 
 
