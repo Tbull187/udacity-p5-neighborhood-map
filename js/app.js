@@ -42,9 +42,9 @@ var model = [
 
 
 // Global variables
-var marker, infoWindow;
+var infoWindow;
 
-
+/* Where the magic happens */
 var viewModel = function() {
 
   // Self will always refer to the viewModel ;)
@@ -56,8 +56,8 @@ var viewModel = function() {
       center: {lat: 47.6062, lng: -122.332}
   });
 
-  // Observable array holds map markers
-  self.allMarkers = ko.observableArray([]);
+  // Array holds map markers
+  self.allMarkers = [];
 
   // Marker constructor
   var MyMarker = function(data) {
@@ -82,77 +82,101 @@ var viewModel = function() {
   // Loop over allMarkers and initialize marker objects
   self.allMarkers().forEach(function(item) {
 
-    // var markerOptions = {
-    //   map: self.googleMap,
-    //   animation: google.maps.Animation.DROP,
-    //   title: item.title,
-    //   position: {lat: item.lat, lng: item.lng}
-    // };
-
-    // item.marker = new google.maps.Marker(markerOptions);
-
-    marker = new google.maps.Marker({
+    var markerOptions = {
       map: self.googleMap,
-      Animation: google.maps.Animation.DROP,
+      animation: google.maps.Animation.DROP,
       title: item.title,
       position: {lat: item.lat, lng: item.lng}
-    })
+    };
+
+    item.marker = new google.maps.Marker(markerOptions);
+
+    // marker = new google.maps.Marker({
+    //   map: self.googleMap,
+    //   Animation: google.maps.Animation.DROP,
+    //   title: item.title,
+    //   position: {lat: item.lat, lng: item.lng}
+    // })
 
     // Create infoWindow
-    infoWindow = new google.maps.InfoWindow({
-      content: null
-    });
+    // infoWindow = new google.maps.InfoWindow({
+    //   content: null
+    // });
 
     // Add click event listener to marker objects.
     // Use IIFE pattern in order to add listner at the time of ...
-    marker.addListener('click', (function(markerCopy){
-      return function() {
+    // marker.addListener('click', (function(markerCopy){
+    //   return function() {
 
         // Open infoWindow on click
-        infoWindow.open(self.googleMap, markerCopy);
+        // infoWindow.open(self.googleMap, markerCopy);
 
         // API call to fourSquare. Build infoWindow with returned data.
-        $.getJSON(baseURL+item.venueID+endURL, function(data){
-          var venue = data.response.venue;
+        // $.getJSON(baseURL+item.venueID+endURL, function(data){
+        //   var venue = data.response.venue;
 
-          infoWindow.setContent('');
+        //   infoWindow.setContent('');
 
-          infoWindow.setContent(
-            '<h3>'+venue.name+'</h3>'+
-            '<h5>'+venue.categories[0].name+'</h5>'+
-            '<div>'+item.description+'</div>'+
-            '<div><h6 id="address">Address: </h6>'+venue.location.address+'</div>'+
-            '<div id="center">'+
-            '<img src="'+venue.photos.groups[0].items[0].prefix+'width200'+venue.photos.groups[0].items[0].suffix+'"">'+
-            '<img src="'+venue.photos.groups[0].items[1].prefix+'width200'+venue.photos.groups[0].items[1].suffix+'"">'+
-            '<img src="'+venue.photos.groups[0].items[2].prefix+'width200'+venue.photos.groups[0].items[3].suffix+'"">'+
-            '</div>'
-          )
-        });
+        //   infoWindow.setContent(
+        //     '<h3>'+venue.name+'</h3>'+
+        //     '<h5>'+venue.categories[0].name+'</h5>'+
+        //     '<div>'+item.description+'</div>'+
+        //     '<div><h6 id="address">Address: </h6>'+venue.location.address+'</div>'+
+        //     '<div id="center">'+
+        //     '<img src="'+venue.photos.groups[0].items[0].prefix+'width200'+venue.photos.groups[0].items[0].suffix+'"">'+
+        //     '<img src="'+venue.photos.groups[0].items[1].prefix+'width200'+venue.photos.groups[0].items[1].suffix+'"">'+
+        //     '<img src="'+venue.photos.groups[0].items[2].prefix+'width200'+venue.photos.groups[0].items[3].suffix+'"">'+
+        //     '</div>'
+        //   )
+        // });
 
         // Marker bounce effect and timeout.
-        markerCopy.setAnimation(google.maps.Animation.BOUNCE);
+    //     markerCopy.setAnimation(google.maps.Animation.BOUNCE);
 
-        window.setTimeout(function(){
-          markerCopy.setAnimation(null);
-        }, 1450)
+    //     window.setTimeout(function(){
+    //       markerCopy.setAnimation(null);
+    //     }, 1450)
 
-      };
-    })(marker));
+    //   };
+    // })(marker));
 
   });
 
+
   /*** FILTER SEARCH ***/
+
+  // Array to hold markers that are visible on the map.
+  self.visibleMarkers = ko.observableArray([]);
+
+  // All markers should be visiible at first. Push markers from allMarkers into visibleMarkers
+  self.allMarkers.forEach(function(marker) {
+    self.visibleMarkers.push(marker);
+  });
 
   // Empty observable tied to textInput of search field
   self.query = ko.observable('');
 
   // Search function: Returns a filtered instance of allMarkers array
-  self.search = ko.computed(function(){
-    return ko.utils.arrayFilter(self.allMarkers(), function(point){
-      return point.title.toLowerCase().indexOf(self.query().toLowerCase()) >= 0;
+  self.search = function() {
+    var searchInput = self.query().toLowerCase();
+
+    self.visibleMarkers.removeAll();
+
+    self.allMarkers.forEach(function(item) {
+      item.marker.setVisible(false);
+
+      if (item.title.toLowerCase().indexOf(searchInput) !== -1) {
+        self.visibleMarkers.push(item);
+      }
     });
-  });
+
+    self.visibleMarkers.forEach(function(item) {
+      item.marker.setVisible(true);
+    });
+  };
+
+
+
 
   self.listClick = function(location) {
     google.maps.event.trigger(marker, 'click');
