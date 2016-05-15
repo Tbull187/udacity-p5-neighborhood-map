@@ -36,12 +36,18 @@ body {
 	text-align: center;
 }
 
+#attribution {
+	-webkit-margin-before: 0;
+	-webkit-margin-after: 0;
+}
+
 img {
 	padding: 5px;
 }
 
-#address 
+#address {
 	display: inline-block;
+	margin-right: 5px;
 }
 
 /*Overide materialize - collection text color*/

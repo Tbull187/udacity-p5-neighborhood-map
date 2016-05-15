@@ -1,6 +1,4 @@
-
-// Model holds data that will be injected into google map markers
-
+// Raw location data.
 var model = [
   {
     title: 'Kerry Park',
@@ -37,26 +35,24 @@ var model = [
     venueID: '40b7d280f964a5208d001fe3',
     description: 'Nunc non fringilla erat, et iaculis lorem. Nam orci odio, ornare sit amet ligula eget, sodales sollicitudin est. Vivamus et augue hendrerit, pellentesque neque ut, finibus lectus. Nulla maximus magna neque, a rhoncus mi laoreet quis. Proin porta efficitur dictum.'
   }
-]
+];
 
-
-
-// Global variables
+// As a global variable there is only one instance of infoWindow.
+// This allows for just one infoWindow to be open at a time.
 var infoWindow;
 
-/* Where the magic happens */
 var viewModel = function() {
 
-  // Self will always refer to the viewModel ;)
+  // Self will always refer to the viewModel.
   var self = this;
 
-  // Create Google Map
+  // Create Google Map.
   self.googleMap = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
       center: {lat: 47.6062, lng: -122.332}
   });
 
-  // Array holds map markers
+  // Array to hold MyMarker objects.
   self.allMarkers = [];
 
   // Marker constructor
@@ -69,18 +65,18 @@ var viewModel = function() {
     this.marker = null;
   };
 
-  // Loop over model, create Marker objects, push them into allMarkers
+  // Loop over model, create MyMarker objects, push them into allMarkers.
   model.forEach(function(data) {
     self.allMarkers.push( new MyMarker(data));
   });
 
-  // FourSquare api URL's
+  // FourSquare api URL's.
   var baseURL = 'https://api.foursquare.com/v2/venues/';
   var venueID = '';
   var endURL = '?client_id=NVT0H2AVTCVAS3AZM5M5ITUQ4Q1D05GA2LL0BW33OEVEPAFE&client_secret=BTEL02NGF4LMABLSNMYAKKLC43N0ZH0QUDZYB4H54Q3VSEDD&v=20130815';
 
-  // Loop over allMarkers and initialize marker objects
-  self.allMarkers().forEach(function(item) {
+  // Loop over allMarkers and initialize marker property as new Google Maps marker object.
+  self.allMarkers.forEach(function(item) {
 
     var markerOptions = {
       map: self.googleMap,
@@ -91,119 +87,97 @@ var viewModel = function() {
 
     item.marker = new google.maps.Marker(markerOptions);
 
-    // marker = new google.maps.Marker({
-    //   map: self.googleMap,
-    //   Animation: google.maps.Animation.DROP,
-    //   title: item.title,
-    //   position: {lat: item.lat, lng: item.lng}
-    // })
-
-    // Create infoWindow
-    // infoWindow = new google.maps.InfoWindow({
-    //   content: null
-    // });
+    // Create infoWindow.
+    infoWindow = new google.maps.InfoWindow({
+      content: null
+    });
 
     // Add click event listener to marker objects.
-    // Use IIFE pattern in order to add listner at the time of ...
-    // marker.addListener('click', (function(markerCopy){
-    //   return function() {
+    // Use IIFE pattern to add listner at the time each object is referenced.
+    item.marker.addListener('click', (function(markerCopy){
+      return function() {
 
-        // Open infoWindow on click
-        // infoWindow.open(self.googleMap, markerCopy);
+        // Open infoWindow on click.
+        infoWindow.open(self.googleMap, markerCopy);
 
         // API call to fourSquare. Build infoWindow with returned data.
-        // $.getJSON(baseURL+item.venueID+endURL, function(data){
-        //   var venue = data.response.venue;
+        $.getJSON(baseURL+item.venueID+endURL, function(data){
+          var venue = data.response.venue;
 
-        //   infoWindow.setContent('');
+          infoWindow.setContent('');
 
-        //   infoWindow.setContent(
-        //     '<h3>'+venue.name+'</h3>'+
-        //     '<h5>'+venue.categories[0].name+'</h5>'+
-        //     '<div>'+item.description+'</div>'+
-        //     '<div><h6 id="address">Address: </h6>'+venue.location.address+'</div>'+
-        //     '<div id="center">'+
-        //     '<img src="'+venue.photos.groups[0].items[0].prefix+'width200'+venue.photos.groups[0].items[0].suffix+'"">'+
-        //     '<img src="'+venue.photos.groups[0].items[1].prefix+'width200'+venue.photos.groups[0].items[1].suffix+'"">'+
-        //     '<img src="'+venue.photos.groups[0].items[2].prefix+'width200'+venue.photos.groups[0].items[3].suffix+'"">'+
-        //     '</div>'
-        //   )
-        // });
+          infoWindow.setContent(
+            '<h3>'+venue.name+'</h3>'+
+            '<h5>'+venue.categories[0].name+'</h5>'+
+            '<div>'+item.description+'</div>'+
+            '<div><h6 id="address">Address:</h6><span>'+venue.location.address+'</span></div>'+
+            '<div id="center">'+
+            '<img src="'+venue.photos.groups[0].items[0].prefix+'200x200'+venue.photos.groups[0].items[0].suffix+'"">'+
+            '<img src="'+venue.photos.groups[0].items[1].prefix+'200x200'+venue.photos.groups[0].items[1].suffix+'"">'+
+            '<img src="'+venue.photos.groups[0].items[2].prefix+'200x200'+venue.photos.groups[0].items[3].suffix+'"">'+
+            '</div>'+
+            '<p id="attribution">Photos courtesy of FourSquare</p>'
+
+          );
+        }).error(function(){
+          infoWindow.setContent('<div>Network Error.</div>');
+        });
 
         // Marker bounce effect and timeout.
-    //     markerCopy.setAnimation(google.maps.Animation.BOUNCE);
+        markerCopy.setAnimation(google.maps.Animation.BOUNCE);
 
-    //     window.setTimeout(function(){
-    //       markerCopy.setAnimation(null);
-    //     }, 1450)
+        window.setTimeout(function(){
+          markerCopy.setAnimation(null);
+        }, 1450);
 
-    //   };
-    // })(marker));
+      };
+    })(item.marker));
 
   });
 
 
   /*** FILTER SEARCH ***/
 
+  // Credit to http://codepen.io/prather-mcs/pen/KpjbNN?editors=1010
   // Array to hold markers that are visible on the map.
-  self.visibleMarkers = ko.observableArray([]);
+  self.visibleMarkers = ko.observableArray();
 
-  // All markers should be visiible at first. Push markers from allMarkers into visibleMarkers
+  // All markers should be visiible at first. Push markers from allMarkers into visibleMarkers.
   self.allMarkers.forEach(function(marker) {
     self.visibleMarkers.push(marker);
   });
 
-  // Empty observable tied to textInput of search field
+  // Empty observable tied to textInput of search field.
   self.query = ko.observable('');
 
-  // Search function: Returns a filtered instance of allMarkers array
+
   self.search = function() {
     var searchInput = self.query().toLowerCase();
 
+    // Empty visibleMarkers array.
     self.visibleMarkers.removeAll();
 
+    // First remove all markers from the map.
     self.allMarkers.forEach(function(item) {
-      item.marker.setVisible(false);
+      item.marker.setMap(null);
 
+      // If marker title matches searchInput, push that marker into visibleMarkers.
       if (item.title.toLowerCase().indexOf(searchInput) !== -1) {
         self.visibleMarkers.push(item);
       }
     });
 
-    self.visibleMarkers.forEach(function(item) {
-      item.marker.setVisible(true);
+    // Finally add all visibleMarkers back on the map
+    self.visibleMarkers().forEach(function(item) {
+      item.marker.setMap(self.googleMap);
     });
   };
 
-
-
-
-  self.listClick = function(location) {
-    google.maps.event.trigger(marker, 'click');
-
-    console.log('click.');
+  // Triggers click event on marker when list item is clicked
+  self.listClick = function(item) {
+    google.maps.event.trigger(item.marker, 'click');
   };
-
-
 
 };
 
-
-
-
 ko.applyBindings( new viewModel() );
-
-viewModel();
-
-
-
-
-
-
-
-
-
-
-
-
-
