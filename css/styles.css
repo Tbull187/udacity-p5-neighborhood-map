@@ -36,6 +36,16 @@ body {
 	text-align: center;
 }
 
+#icon {
+	display: inline-block;
+}
+
+#address {
+	display: inline-block;
+	vertical-align: top;
+	margin-left: 1em;
+}
+
 #attribution {
 	-webkit-margin-before: 0;
 	-webkit-margin-after: 0;
@@ -45,12 +55,16 @@ img {
 	padding: 5px;
 }
 
-#address {
-	display: inline-block;
-	margin-right: 5px;
+p {
+	-webkit-margin-before: 0;
+	-webkit-margin-after: 0;
 }
 
 /*Overide materialize - collection text color*/
 .collection a.collection-item {
   color: #000000;
+}
+
+nav .brand-logo {
+	margin-left: 1em;
 }

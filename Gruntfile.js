@@ -29,7 +29,4 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
 
-  // Default task(s).
-  grunt.registerTask('default', ['jshint']);
-
 };
