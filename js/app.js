@@ -62,6 +62,20 @@ var model = [
   }
 ];
 
+
+
+// If google maps script fails to load
+function googleError() {
+  alert('Google Maps script failed to load. Please check network connection');
+}
+
+// If google maps script succeeds, this callback initializes the viewModel
+function googleSuccess() {
+  ko.applyBindings( new viewModel() );
+}
+
+
+
 // As a global variable there is only one instance of infoWindow.
 // This allows for just one infoWindow to be open at a time.
 var infoWindow;
@@ -73,9 +87,18 @@ var viewModel = function() {
 
   // Create Google Map.
   self.googleMap = new google.maps.Map(document.getElementById('map'), {
-      zoom: 13,
-      center: {lat: 47.625143, lng: -122.326594}
+    zoom: 13,
+    center: {lat: 47.625143, lng: -122.326594}
   });
+
+  // Bound the map so all markers appear in view even on small screens
+  var bounds = new google.maps.LatLngBounds(),
+      point1 = new google.maps.LatLng(47.590211, -122.396608),
+      point2 = new google.maps.LatLng(47.679511, -122.243143);
+
+  bounds.extend(point1);
+  bounds.extend(point2);
+  self.googleMap.fitBounds(bounds);
 
   // Array to hold MyMarker objects.
   self.allMarkers = [];
@@ -95,9 +118,9 @@ var viewModel = function() {
   });
 
   // FourSquare api URL's.
-  var baseURL = 'https://api.foursquare.com/v2/venues/';
-  var venueID = '';
-  var endURL = '?client_id=NVT0H2AVTCVAS3AZM5M5ITUQ4Q1D05GA2LL0BW33OEVEPAFE&client_secret=BTEL02NGF4LMABLSNMYAKKLC43N0ZH0QUDZYB4H54Q3VSEDD&v=20130815';
+  var baseURL = 'https://api.foursquare.com/v2/venues/',
+      venueID = '',
+      endURL = '?client_id=NVT0H2AVTCVAS3AZM5M5ITUQ4Q1D05GA2LL0BW33OEVEPAFE&client_secret=BTEL02NGF4LMABLSNMYAKKLC43N0ZH0QUDZYB4H54Q3VSEDD&v=20130815';
 
   // Loop over allMarkers and initialize marker property as new Google Maps marker object.
   self.allMarkers.forEach(function(item) {
@@ -121,7 +144,10 @@ var viewModel = function() {
     item.marker.addListener('click', (function(markerCopy){
       return function() {
 
-        // Open infoWindow on click.
+        // Pan to map marker.
+        self.googleMap.panTo(markerCopy.getPosition());
+
+        // Open infoWindow.
         infoWindow.open(self.googleMap, markerCopy);
 
         // API call to fourSquare. Build infoWindow with returned data.
@@ -150,7 +176,7 @@ var viewModel = function() {
             '</div>'+
             '<p id="attribution">Info and photos courtesy of FourSquare</p>'
           );
-        }).error(function(){
+        }).fail(function(){
           infoWindow.setContent('<div>Network Error.</div>');
         });
 
@@ -159,7 +185,7 @@ var viewModel = function() {
 
         window.setTimeout(function(){
           markerCopy.setAnimation(null);
-        }, 1450);
+        }, 1400);
 
       };
     })(item.marker));
@@ -186,9 +212,9 @@ var viewModel = function() {
     // Empty visibleMarkers array.
     self.visibleMarkers.removeAll();
 
-    // First remove all markers from the map.
+    // First make all marker invisible.
     self.allMarkers.forEach(function(item) {
-      item.marker.setMap(null);
+      item.marker.setVisible(false);
 
       // If marker's title matches searchInput, push that marker into visibleMarkers.
       if (item.title.toLowerCase().indexOf(searchInput) !== -1) {
@@ -196,17 +222,17 @@ var viewModel = function() {
       }
     });
 
-    // Finally add all visibleMarkers back on the map
+    // Finally set all visibleMarkers to visible.
     self.visibleMarkers().forEach(function(item) {
-      item.marker.setMap(self.googleMap);
+      item.marker.setVisible(true);
     });
   };
 
-  // Triggers click event on marker when list item is clicked
+  // Triggers click event on marker when list item is clicked.
   self.listClick = function(item) {
     google.maps.event.trigger(item.marker, 'click');
   };
 
 };
 
-ko.applyBindings( new viewModel() );
+

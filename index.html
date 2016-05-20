@@ -3,6 +3,7 @@
 
 <head>
 	<title>Seattle Map</title>
+	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
 
 	<!--Google Icon Font-->
@@ -26,11 +27,12 @@
 
 		<!-- Filter List -->
 		<div class="col s2" id="filter">
-			<input type="search" data-bind="textInput: query, event: {keyup: search}"></input>
+			<input type="search" data-bind="textInput: query, event: {keyup: search}">
 			<ul class="collection" data-bind="foreach: visibleMarkers">
 				<a href="#!" class="collection-item" data-bind="text: title, click: $parent.listClick"></a>
 			</ul>
 		</div>
+
 
 		<!-- Map -->
 		<div class="col s10">
@@ -44,8 +46,8 @@
 	<script type="text/javascript" src="js/knockout-3.4.0.js"></script>
 	<script type="text/javascript" src="js/jquery-2.2.2.min.js"></script>
 	<script type="text/javascript" src="js/materialize.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 	<script type="text/javascript" src="js/app.min.js"></script>
+	<script async src="https://maps.googleapis.com/maps/api/js?callback=googleSuccess" onerror="googleError()"></script>
 
 </body>
 
