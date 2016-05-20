@@ -1,65 +1,65 @@
 // Raw location data.
 var model = [
-  {
-    title: 'Kerry Park',
-    lat: 47.629552,
-    lng: -122.360127,
-    venueID: '4558a938f964a520493d1fe3'
-  },
-  {
-    title: 'Showbox Sodo',
-    lat: 47.587926,
-    lng: -122.333627,
-    venueID: '472e59eaf964a520074c1fe3'
-  },
-  {
-    title: 'Toulouse Petit',
-    lat: 47.624761,
-    lng: -122.357008,
-    venueID: '4ae60430f964a52018a421e3'
-  },
-  {
-    title: 'GameWorks',
-    lat: 47.611909,
-    lng: -122.334027,
-    venueID: '40b7d280f964a5208d001fe3'
-  },
-  {
-    title: 'Trading Musician',
-    lat: 47.671845,
-    lng: -122.317115,
-    venueID: '4ae0f365f964a520fb8321e3'
-  },
-  {
-    title: 'Brave Horse Tavern',
-    lat: 47.621754,
-    lng: -122.336879,
-    venueID: '4d9a7c885e52224b217e2ee3'
-  },
-  {
-    title: 'Uncle Ike\'s',
-    lat: 47.613352,
-    lng: -122.302226,
-    venueID: '542b0848498e259fb7853267'
-  },
-  {
-    title: 'Pagliacci Pizza',
-    lat: 47.624396,
-    lng: -122.356561,
-    venueID: '459c14eef964a52095401fe3'
-  },
-  {
-    title: 'The Masonry',
-    lat: 47.625676,
-    lng: -122.355746,
-    venueID: '51fdb194498e5101da70bb56'
-  },
-  {
-    title: 'Cinerama',
-    lat: 47.614275,
-    lng: -122.341445,
-    venueID: '4276bf00f964a52083211fe3'
-  }
+	{
+		title: 'Kerry Park',
+		lat: 47.629552,
+		lng: -122.360127,
+		venueID: '4558a938f964a520493d1fe3'
+	},
+	{
+		title: 'Showbox Sodo',
+		lat: 47.587926,
+		lng: -122.333627,
+		venueID: '472e59eaf964a520074c1fe3'
+	},
+	{
+		title: 'Toulouse Petit',
+		lat: 47.624761,
+		lng: -122.357008,
+		venueID: '4ae60430f964a52018a421e3'
+	},
+	{
+		title: 'GameWorks',
+		lat: 47.611909,
+		lng: -122.334027,
+		venueID: '40b7d280f964a5208d001fe3'
+	},
+	{
+		title: 'Trading Musician',
+		lat: 47.671845,
+		lng: -122.317115,
+		venueID: '4ae0f365f964a520fb8321e3'
+	},
+	{
+		title: 'Brave Horse Tavern',
+		lat: 47.621754,
+		lng: -122.336879,
+		venueID: '4d9a7c885e52224b217e2ee3'
+	},
+	{
+		title: 'Uncle Ike\'s',
+		lat: 47.613352,
+		lng: -122.302226,
+		venueID: '542b0848498e259fb7853267'
+	},
+	{
+		title: 'Pagliacci Pizza',
+		lat: 47.624396,
+		lng: -122.356561,
+		venueID: '459c14eef964a52095401fe3'
+	},
+	{
+		title: 'The Masonry',
+		lat: 47.625676,
+		lng: -122.355746,
+		venueID: '51fdb194498e5101da70bb56'
+	},
+	{
+		title: 'Cinerama',
+		lat: 47.614275,
+		lng: -122.341445,
+		venueID: '4276bf00f964a52083211fe3'
+	}
 ];
 
 
@@ -234,5 +234,3 @@ var viewModel = function() {
   };
 
 };
-
-
