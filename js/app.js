@@ -62,14 +62,15 @@ var model = [
 	}
 ];
 
+// Initialize collapsible side nav.
+$(".button-collapse").sideNav();
 
-
-// If google maps script fails to load
+// If google maps script fails to load:
 function googleError() {
   alert('Google Maps script failed to load. Please check network connection');
 }
 
-// If google maps script succeeds, this callback initializes the viewModel
+// If google maps script succeeds, this callback initializes the viewModel.
 function googleSuccess() {
   ko.applyBindings( new viewModel() );
 }

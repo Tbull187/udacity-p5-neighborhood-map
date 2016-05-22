@@ -11,15 +11,20 @@ body {
 }
 
 .row {
-	height: 93.5%;
+	height: 100%;
 	margin-bottom: 0;
 }
 
 .row .col {
 	padding-right: 0;
+	padding-left: 0;
 }
 
 .col.s10 {
+	height: 100%;
+}
+
+.col.s12 {
 	height: 100%;
 }
 
@@ -27,6 +32,18 @@ body {
 	height: 100%;
 	width: 100%;
 }
+
+
+/* Overide materialize */
+.collection .collection-item {
+	line-height: 64px;
+}
+
+/*Overide materialize - collection text color*/
+.collection a.collection-item {
+  color: #000000;
+}
+
 
 #filter {
 	height: 100%;
@@ -60,11 +77,8 @@ p {
 	-webkit-margin-after: 0;
 }
 
-/*Overide materialize - collection text color*/
-.collection a.collection-item {
-  color: #000000;
-}
-
 nav .brand-logo {
 	margin-left: 1em;
+	position: relative;
 }
+
