@@ -16,52 +16,28 @@
 </head>
 
 <body>
-	<header>
-		<nav class="top-nav green">
-			<div class="container">
-				<div class="nav-wrapper">
-					<a href="#" data-activates="nav-mobile" class="button-collapse top-nav full hide-on-large-only"><i class="material-icons">menu</i></a>
-					<span class="brand-logo">SEATTLE</span>
-				</div>
-			</div>
-		</nav>
 
-		<ul id="nav-mobile" class="side-nav fixed collection">
-			<input type="search" data-bind="textInput: query, event: {keyup: search}">
-			<!-- ko foreach: visibleMarkers -->
-			<a href="!#" class="collection-item" data-bind="text: title, click: $parent.listClick"></a>
-			<!-- /ko -->
-		</ul>
-	</header>
-
-
-
-	<div class="row">
-		<div class="col s12">
-			<div id="map"></div>
+	<nav class="green">
+		<div class="nav-wrapper">
+			<span class="brand-logo">SEATTLE</span>
 		</div>
-	</div>
-
-
-
-
+	</nav>
 
 	<div class="row">
 
-
-<!-- 		<div class="col s2" id="filter">
-			<input type="search" data-bind="textInput: query, event: {keyup: search}">
+		<!-- Filter List -->
+		<div class="col s4 m2" id="filter">
+			<input id="search" type="search" placeholder="Search" data-bind="textInput: query, event: {keyup: search}">
 
 			<ul class="collection" data-bind="foreach: visibleMarkers">
 				<a href="#!" class="collection-item" data-bind="text: title, click: $parent.listClick"></a>
 			</ul>
-
-		</div> -->
-
+		</div>
 
 
-		<div class="col s12">
-			<div id="">
+		<!-- Map -->
+		<div class="col s8 m10">
+			<div id="map">
 
 			</div>
 		</div>
