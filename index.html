@@ -11,7 +11,7 @@
 	<!--Materialize.css-->
 	<link rel="stylesheet" type="text/css" href="css/materialize.min.css">
 	<!--Custom stylesheet-->
-	<link rel="stylesheet" type="text/css" href="css/styles.min.css">
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
 
 </head>
 
@@ -26,8 +26,9 @@
 	<div class="row">
 
 		<!-- Filter List -->
-		<div class="col s2" id="filter">
-			<input type="search" data-bind="textInput: query, event: {keyup: search}">
+		<div class="col s4 m2" id="filter">
+			<input id="search" type="search" placeholder="Search" data-bind="textInput: query, event: {keyup: search}">
+
 			<ul class="collection" data-bind="foreach: visibleMarkers">
 				<a href="#!" class="collection-item" data-bind="text: title, click: $parent.listClick"></a>
 			</ul>
@@ -35,7 +36,7 @@
 
 
 		<!-- Map -->
-		<div class="col s10">
+		<div class="col s8 m10">
 			<div id="map">
 
 			</div>
