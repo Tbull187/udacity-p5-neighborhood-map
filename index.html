@@ -28,12 +28,10 @@
 		<!-- Filter List -->
 		<div class="col s4 m2" id="filter">
 			<input id="search" type="search" placeholder="Search" data-bind="textInput: query, event: {keyup: search}">
-
-			<ul class="collection" data-bind="foreach: visibleMarkers">
+			<div class="collection" data-bind="foreach: visibleMarkers">
 				<a href="#!" class="collection-item" data-bind="text: title, click: $parent.listClick"></a>
-			</ul>
+			</div>
 		</div>
-
 
 		<!-- Map -->
 		<div class="col s8 m10">

@@ -161,21 +161,21 @@ var viewModel = function() {
             '<h3>'+venue.name+'</h3>'+
             '<h5>'+venue.categories[0].name+'</h5>'+
             '<div>'+
-              '<div id="icon">'+
+              '<div class="icon">'+
                 '<img src="'+venue.categories[0].icon.prefix+'bg_64'+venue.categories[0].icon.suffix+'" >'+
               '</div>'+
-              '<div id="address">'+
+              '<div class="address">'+
                 '<h6>Address:</h6>'+
                 '<p>'+venue.location.address+'</p>'+
                 '<p>'+venue.location.city+', '+venue.location.state+', '+venue.location.postalCode+'</p>'+
               '</div>'+
             '</div>'+
-            '<div id="center">'+
+            '<div class="center">'+
               '<img src="'+venue.photos.groups[0].items[0].prefix+'200x200'+venue.photos.groups[0].items[0].suffix+'"">'+
               '<img src="'+venue.photos.groups[0].items[1].prefix+'200x200'+venue.photos.groups[0].items[1].suffix+'"">'+
               '<img src="'+venue.photos.groups[0].items[2].prefix+'200x200'+venue.photos.groups[0].items[3].suffix+'"">'+
             '</div>'+
-            '<p id="attribution">Info and photos courtesy of FourSquare</p>'
+            '<p class="attribution">Info and photos courtesy of FourSquare</p>'
           );
         }).fail(function(){
           infoWindow.setContent('<div>Network Error.</div>');

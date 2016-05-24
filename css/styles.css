@@ -6,8 +6,13 @@ body {
 	padding: 0;
 }
 
-.container1 {
-	height: 100%;
+img {
+	padding: 5px;
+}
+
+p {
+	-webkit-margin-before: 0;
+	-webkit-margin-after: 0;
 }
 
 .row {
@@ -32,34 +37,25 @@ body {
 	width: 100%;
 }
 
-#filter {
+.filter {
 	height: 100%;
 }
 
-#center {
+.center {
 	text-align: center;
 }
 
-#icon {
+.icon {
 	display: inline-block;
 }
 
-#address {
+.address {
 	display: inline-block;
 	vertical-align: top;
 	margin-left: 1em;
 }
 
-#attribution {
-	-webkit-margin-before: 0;
-	-webkit-margin-after: 0;
-}
-
-img {
-	padding: 5px;
-}
-
-p {
+.attribution {
 	-webkit-margin-before: 0;
 	-webkit-margin-after: 0;
 }
